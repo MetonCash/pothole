@@ -1,0 +1,29 @@
+[package]
+name = "@metoncash/pothole"
+description = "Two-party encrypted messaging over TON external messages"
+version = "0.1.0"
+license = "MIT"
+
+[toolchain]
+acton = "1.2.1"
+
+[contracts.Pothole]
+src = "contracts/pothole.tolk"
+
+[contracts.PotholeFactory]
+src = "contracts/factory.tolk"
+
+[wrappers.typescript]
+output-dir = "sdk/src/wrappers"
+
+[fmt]
+width = 100
+
+[import-mappings]
+acton = ".acton"
+tests = "tests"
+wrappers = "wrappers"
+common = "contracts/common"
+factory = "contracts/factory"
+pothole = "contracts/pothole"
+tolkbox = "node_modules/@ston-fi/tolkbox/src"

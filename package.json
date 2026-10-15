@@ -1,0 +1,32 @@
+{
+  "name": "@metoncash/pothole",
+  "version": "0.1.0",
+  "description": "Two-party encrypted messaging over TON external messages",
+  "license": "MIT",
+  "private": true,
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "build": "acton build",
+    "generate": "acton wrapper --all",
+    "format": "acton fmt",
+    "format:check": "acton fmt --check",
+    "lint": "acton check",
+    "test": "npm run test:tolk && npm run test:node",
+    "test:tolk": "acton test",
+    "test:node": "node --test tests/*.test.mjs",
+    "test:gas": "acton test tests/gas.test.tolk --no-capture",
+    "build:sdk": "npm --prefix sdk run build",
+    "generate:sdk": "npm run build && acton wrapper --all --ts",
+    "check:sdk": "npm --prefix sdk run check:contracts && npm --prefix sdk run typecheck",
+    "test:sdk": "npm --prefix sdk test",
+    "deploy": "acton script scripts/deploy.tolk",
+    "deploy:factory": "acton script scripts/deploy-factory.tolk",
+    "mint": "acton script scripts/mint.tolk",
+    "send": "acton script scripts/send.tolk",
+    "read": "acton script scripts/read.tolk",
+    "close": "acton script scripts/close.tolk"
+  },
+  "devDependencies": {
+    "@ston-fi/tolkbox": "^0.5.0"
+  }
+}

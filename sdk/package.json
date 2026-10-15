@@ -1,0 +1,30 @@
+{
+  "name": "@metoncash/pothole-sdk",
+  "version": "0.1.0",
+  "description": "TypeScript SDK for Pothole encrypted mailboxes on TON",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist", "LICENSE"],
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "generate": "npm --prefix .. run generate:sdk",
+    "check:contracts": "npm --prefix .. run build && npm run build && node scripts/check-contracts.mjs",
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.test.json",
+    "test": "jest --runInBand",
+    "prepare": "npm run build"
+  },
+  "dependencies": {
+    "@ton/core": "^0.63.1",
+    "@ton/crypto": "^3.3.0"
+  },
+  "devDependencies": {
+    "@ton/sandbox": "^0.42.0",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^22.10.0",
+    "jest": "^30.4.2",
+    "ts-jest": "^29.4.11",
+    "typescript": "^5.9.3"
+  }
+}

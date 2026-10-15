@@ -1,0 +1,80 @@
+name: Contracts
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Setup Acton
+        uses: ton-blockchain/setup-acton@0f9f436843d740466cae2d7411ff59072dde942e # v1.2.0
+
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            sdk/package-lock.json
+
+      - name: Install contract dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Build
+        run: npm run build
+
+      - name: Check generated Tolk wrappers
+        run: |
+          npm run generate
+          git diff --exit-code -- wrappers/Pothole.gen.tolk wrappers/PotholeFactory.gen.tolk
+
+      - name: Formatter
+        run: npm run format:check
+
+      - name: Linter
+        run: npm run lint -- --output-format github
+
+      - name: Test
+        run: npm run test:tolk
+
+      - name: Test encryption helper
+        run: npm run test:node
+
+      - name: Install SDK dependencies
+        run: npm ci --prefix sdk
+
+      - name: Check generated SDK wrappers
+        run: |
+          npm run generate:sdk
+          git diff --exit-code -- sdk/src/wrappers/Pothole.gen.ts sdk/src/wrappers/PotholeFactory.gen.ts
+
+      - name: Build and test SDK
+        run: |
+          npm run check:sdk
+          npm run test:sdk
