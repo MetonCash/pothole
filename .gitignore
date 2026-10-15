@@ -26,6 +26,11 @@ Session.vim
 .emacs/
 .helix/
 
+# Local agent and cloud configuration
+.agents/
+.codex/
+.aws/
+
 # Acton related
 .env
 .env.*
